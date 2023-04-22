@@ -3,7 +3,10 @@
 #include <string>
 #include <vector>
 #include <conio.h>
+#include <fstream>
+#include <locale.h>
 
+#include "Tree.h"
 #include"Message.h"
 
 struct UserLoginExp: public std::exception
@@ -41,5 +44,4 @@ private:
 	std::vector<Message>& getAllmessages() { return _messages; }
 	std::shared_ptr<User> getUserByLogin(const std::string& login) const;
 	std::shared_ptr<User> getUserByName(const std::string& name) const;
-
 };

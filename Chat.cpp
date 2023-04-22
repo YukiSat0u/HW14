@@ -140,7 +140,6 @@ void Chat::singUp()
 	User user = User(login, password, name, gender);
 	_users.push_back(user);
 	_currentUser = std::make_shared<User>(user);
-
 }
 
 void Chat::login()
@@ -205,10 +204,44 @@ void Chat::showChat() const
 
 void Chat::addMessage()
 {
+	Tree* t = new Tree;
+	std::string input_string;
+	bool is_open = true;
+	std::ifstream input("wordList.txt");
+	if (!(input.is_open()))
+	{
+		std::cout << "Dictionary was not open!" << std::endl;
+		is_open = false;
+	}
+
+	while (!input.eof()) {
+
+		getline(input, input_string);
+		t->insertWord(input_string);
+
+	}
+
 	std::string to, text;
 
+	char key = 0;
 	std::cout << "To (name or All): ";
 	std::cin >> to;
+	if (is_open)
+	{
+		std::cout << "Use dictionary? any key-YES, (0)-NO ";
+		if (std::cin >> key && is_open && key != '0')
+		{
+			bool possible = 0;
+			std::cout << "Enter prefix: ";
+			std::string prf;
+			std::cin >> prf;
+
+			t->autoComplete(prf, possible);
+			input.close();
+			delete t;
+		}
+	}
+
 	std::cout << "Text: ";
 	std::cin.ignore();
 	std::getline(std::cin, text);
@@ -221,7 +254,7 @@ void Chat::addMessage()
 
 	if (to == "All" || to == "all")
 		_messages.push_back(Message{ _currentUser->getUserLogin(), "All", text });
-		
+
 	else
 		_messages.push_back(Message{ _currentUser->getUserLogin(), getUserByName(to)->getUserLogin(), text });
 }
