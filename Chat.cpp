@@ -228,7 +228,7 @@ void Chat::addMessage()
 	std::cin >> to;
 	if (is_open)
 	{
-		std::cout << "Use dictionary? any key-YES, (0)-NO ";
+		std::cout << "Use dictionary? any (1)-YES, (0)-NO ";
 		if (std::cin >> key && is_open && key != '0')
 		{
 			bool possible = 0;
