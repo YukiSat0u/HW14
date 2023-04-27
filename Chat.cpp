@@ -102,6 +102,25 @@ void Chat::showAllUsersName() const
 	std::cout << "----------" << std::endl;
 }
 
+void Chat::reg(char _login[LOGINLENGTH], char _pass[], int pass_length) {
+    uint* digest = sha1(_pass, pass_length);
+    addinner(_login, digest);
+}
+void Chat::unreg(char _login[LOGINLENGTH]) {
+    int index, i = 0;
+    for (; i < mem_size; i++) {
+        index = hash_func(_login, i*i);
+        if (data[index].status == CellStatus::free)
+            return;
+        else if (data[index].status == CellStatus::engaged
+            && !memcmp(_login, data[index].login, LOGINLENGTH))
+            break;
+    }
+    if (i >= mem_size) return;
+
+    data[index].status = CellStatus::deleted;
+}
+
 void Chat::singUp()
 {
 	char c;
@@ -148,16 +167,16 @@ void Chat::login()
 	std::string login;
 	std::vector <char> password;
 	char operation;
-	char ñ;
+	char Ã±;
 	do
 	{
 		std::cout << "Login: ";
 		std::cin >> login;
 		_currentUser = getUserByLogin(login);
 		std::cout << "Password: ";
-		while ((ñ = _getch()) != '\r')
+		while ((Ã± = _getch()) != '\r')
 		{
-			password.push_back(ñ);
+			password.push_back(Ã±);
 			_putch('*');
 		}
 		std::cout << "\n";
